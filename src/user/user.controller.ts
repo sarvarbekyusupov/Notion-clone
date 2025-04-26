@@ -8,7 +8,13 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
 } from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -20,6 +26,7 @@ import {
   ApiResponse,
   ApiBody,
   ApiParam,
+  ApiConsumes,
 } from "@nestjs/swagger";
 
 @ApiTags("user")
@@ -28,18 +35,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @ApiOperation({ summary: "Create a new user" })
-  @ApiResponse({
-    status: 201,
-    description: "User successfully created",
-  })
-  @ApiResponse({
-    status: 400,
-    description: "Bad request - Invalid input data",
-  })
-  @ApiBody({ type: CreateUserDto })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @UseInterceptors(FileInterceptor("image"))
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @UploadedFile() image: any
+  ) {
+    console.log(image);
+    return this.userService.create(createUserDto, image);
   }
 
   @Get()
@@ -68,6 +70,8 @@ export class UserController {
   }
 
   @Patch(":id")
+  @UseInterceptors(FileInterceptor("profilePicture"))
+  @ApiConsumes("multipart/form-data")
   @ApiOperation({ summary: "Update user by ID" })
   @ApiParam({ name: "id", description: "User ID" })
   @ApiResponse({
@@ -79,8 +83,21 @@ export class UserController {
     description: "User not found",
   })
   @ApiBody({ type: UpdateUserDto })
-  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  update(
+    @Param("id") id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }), // 5MB
+          new FileTypeValidator({ fileType: /(jpg|jpeg|png|gif)$/ }),
+        ],
+        fileIsRequired: false,
+      })
+    )
+    file?: Express.Multer.File
+  ) {
+    return this.userService.update(+id, updateUserDto, file);
   }
 
   @Delete(":id")

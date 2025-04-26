@@ -1,10 +1,16 @@
-import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
-import { UserRole } from "./user-role.model";
+import {
+  BelongsToMany,
+  Column,
+  DataType,
+  Model,
+  Table,
+} from "sequelize-typescript";
 
 interface IUserCreationAttr {
   name: string;
   email: string;
   password: string;
+  profilePicture?: string;
 }
 
 @Table({ tableName: "users" })
@@ -17,7 +23,8 @@ export class User extends Model<User, IUserCreationAttr> {
   declare id: number;
 
   @Column({
-    type: DataType.STRING(100),
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare name: string;
 
@@ -29,16 +36,21 @@ export class User extends Model<User, IUserCreationAttr> {
   declare email: string;
 
   @Column({
-    type: DataType.STRING(100),
+    type: DataType.STRING,
+    allowNull: false,
   })
   declare password: string;
 
   @Column({
-    type: DataType.BOOLEAN,
-    defaultValue:false
+    type: DataType.STRING,
+    allowNull: true,
   })
-  isActive: boolean;
+  profilePicture?: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  declare isActive: boolean;
 
-  
 }

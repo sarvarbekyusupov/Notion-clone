@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsString,
   IsStrongPassword,
+  IsOptional,
 } from "class-validator";
 
 export class CreateUserDto {
@@ -38,5 +39,15 @@ export class CreateUserDto {
     description: "Additional user value",
     required: false,
   })
+  @IsOptional()
   value: string;
+
+  @ApiProperty({
+    type: "string",
+    format: "binary",
+    description: "User profile picture",
+    required: false,
+  })
+  @IsOptional()
+  profilePicture?: any;
 }

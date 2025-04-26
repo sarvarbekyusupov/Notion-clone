@@ -23,17 +23,20 @@ export class Admin extends Model<Admin, IAdminCreationAttr> {
 
   @Column({
     type: DataType.STRING,
+    allowNull: false,
   })
-  declare name: string;
+  name: string;
 
   @Column({
     type: DataType.STRING,
+    allowNull: false,
+    unique: true,
   })
-  declare email: string;
+  email: string;
+
   @Column({
     type: DataType.STRING,
+    allowNull: false,
   })
-  declare password: string;
-
-
+  password!: string;
 }

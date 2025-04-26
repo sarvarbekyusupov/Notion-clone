@@ -1,6 +1,12 @@
+import { IsString, IsEmail } from "class-validator";
 
 export class SignInDto {
-  readonly email: string;
-  readonly password: string;
-  readonly value: string;
+  @IsEmail()
+  readonly email!: string;
+
+  @IsString()
+  readonly password!: string;
+
+  @IsString()
+  readonly value!: string;
 }

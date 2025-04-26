@@ -16,4 +16,8 @@ export class CreateBlockDto {
   @IsNumber()
   @IsNotEmpty()
   order_index: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  device_id: number;
 }

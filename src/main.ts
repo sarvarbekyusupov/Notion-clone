@@ -1,13 +1,20 @@
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
+import { AppModule } from "./app.module.js";
 import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { join } from "path";
+import { NestExpressApplication } from "@nestjs/platform-express";
 
 async function start() {
   try {
     const PORT = process.env.PORT || 3030;
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.useGlobalPipes(new ValidationPipe());
+
+    // Serve static files
+    // app.useStaticAssets(join(__dirname, "..", "static"), {
+    //   prefix: "/static",
+    // });
 
     const config = new DocumentBuilder()
       .setTitle("Daftarim API")

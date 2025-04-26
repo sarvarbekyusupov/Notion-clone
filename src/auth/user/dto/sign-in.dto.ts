@@ -1,25 +1,25 @@
+import { IsString, IsEmail } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class SignInDto {
   @ApiProperty({
-    description: "User email address",
-    example: "user@example.com",
-    required: true,
+    example: "user@mail.com",
+    description: "User email",
   })
-  readonly email: string;
+  @IsEmail()
+  readonly email!: string;
 
   @ApiProperty({
-    description: "User password",
     example: "password123",
-    required: true,
-    minLength: 6,
+    description: "User password",
   })
-  readonly password: string;
+  @IsString()
+  readonly password!: string;
 
   @ApiProperty({
-    description: "Additional value for authentication",
-    example: "some-value",
-    required: false,
+    example: "device_token",
+    description: "Device token for notifications",
   })
-  readonly value: string;
+  @IsString()
+  readonly value!: string;
 }

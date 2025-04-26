@@ -2,11 +2,10 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 interface ITypeCreationAttr {
   name: string;
-  description: string;
- 
+  description?: string;
 }
 
-@Table({ tableName: "type" })
+@Table({ tableName: "types" })
 export class Type extends Model<Type, ITypeCreationAttr> {
   @Column({
     type: DataType.INTEGER,
@@ -17,11 +16,13 @@ export class Type extends Model<Type, ITypeCreationAttr> {
 
   @Column({
     type: DataType.STRING,
+    allowNull: false,
   })
   name: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT,
+    allowNull: true,
   })
-  description: string;
+  description?: string;
 }

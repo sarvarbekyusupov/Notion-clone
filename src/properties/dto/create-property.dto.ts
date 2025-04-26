@@ -1,4 +1,4 @@
-import { IsAlpha, IsNotEmpty } from "class-validator";
+import { IsAlpha, IsAlphanumeric, IsNotEmpty, IsNumber } from "class-validator";
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePropertyDto {
@@ -19,4 +19,7 @@ export class CreatePropertyDto {
   @IsAlpha()
   @IsNotEmpty()
   description: string;
+
+  @IsNumber()
+  device_id:number
 }
