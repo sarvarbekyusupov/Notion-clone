@@ -26,6 +26,10 @@ import { GroupsModule } from "./groups/groups.module";
 import { GroupMembersModule } from "./group-members/group-members.module";
 import { Group } from "./groups/models/group.model";
 import { GroupMember } from "./group-members/models/group-member.model";
+import { PermissionsModule } from './permissions/permissions.module';
+import { WorkspaceModule } from './workspace/workspace.module';
+import { TeamSpaceModule } from './team-space/team-space.module';
+import { DeviceModule } from './device/device.module';
 
 @Module({
   imports: [
@@ -65,6 +69,10 @@ import { GroupMember } from "./group-members/models/group-member.model";
     DevicesModule,
     GroupsModule,
     GroupMembersModule,
+    PermissionsModule,
+    WorkspaceModule,
+    TeamSpaceModule,
+    DeviceModule,
   ],
   controllers: [],
   providers: [],
